@@ -1,6 +1,6 @@
 import { Logger } from "./logger.js";
 
-// Auto-refresh manager for periodic updates
+// Auto-refresh manager for updates
 export class AutoRefreshManager {
   constructor(refreshCallback, intervalMinutes = 30) {
     this.refreshCallback = refreshCallback;
@@ -76,13 +76,5 @@ export class AutoRefreshManager {
     Logger.info(
       `📅 Next auto-refresh scheduled for: ${nextRefreshDate.toLocaleTimeString()}`
     );
-  }
-
-  /**
-   * Check if auto-refresh is currently active
-   * @returns {boolean} - Whether auto-refresh is active
-   */
-  isRefreshActive() {
-    return this.isActive;
   }
 }

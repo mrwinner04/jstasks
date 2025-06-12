@@ -62,11 +62,4 @@ export class CacheManager {
     const timeSinceLastFetch = Date.now() - lastFetch;
     return timeSinceLastFetch >= this.CACHE_DURATION;
   }
-
-  static clearAllCache() {
-    Object.values(this.CACHE_KEYS).forEach((key) => {
-      this.removeItem(key);
-    });
-    Logger.info("🧹 Cleared all cache data");
-  }
 }

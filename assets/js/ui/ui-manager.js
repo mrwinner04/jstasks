@@ -15,7 +15,7 @@ export class UIManager {
 
     // Initialize auto-refresh manager
     this.autoRefreshManager = new AutoRefreshManager(
-      () => this.refreshWeather(true), // true for auto-refresh
+      () => this.refreshWeather(true), // auto-refresh
       30 // 30 minutes
     );
 
