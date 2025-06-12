@@ -104,7 +104,7 @@ export class UIManager {
   async fetchNewUsers() {
     try {
       Logger.info("👥 Fetching new users...");
-      const users = await UserService.fetchRandomUsers(5);
+      const users = await UserService.fetchFreshUsers(5);
       this.clearUserCards();
       this.currentUserData = [];
 
@@ -273,37 +273,5 @@ export class UIManager {
     errorDiv.textContent = message;
     this.userCardsContainer.prepend(errorDiv);
     setTimeout(() => errorDiv.remove(), 5000);
-  }
-
-  /**
-   * Get auto-refresh status
-   * @returns {Object} - Status information
-   */
-  getAutoRefreshStatus() {
-    return this.autoRefreshManager.getStatus();
-  }
-
-  /**
-   * Toggle auto-refresh on/off
-   */
-  toggleAutoRefresh() {
-    if (this.autoRefreshManager.isRefreshActive()) {
-      this.autoRefreshManager.stop();
-      Logger.info("🛑 Auto-refresh disabled");
-    } else {
-      this.autoRefreshManager.start();
-      Logger.info("🔄 Auto-refresh enabled");
-    }
-  }
-
-  /**
-   * Force immediate refresh and reset auto-refresh timer
-   */
-  async forceRefresh() {
-    if (this.autoRefreshManager.isRefreshActive()) {
-      await this.autoRefreshManager.forceRefresh();
-    } else {
-      await this.refreshWeather(false);
-    }
   }
 }

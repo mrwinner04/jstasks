@@ -61,13 +61,4 @@ export class UserService {
   static getCachedUsers() {
     return CacheManager.getItem(CacheManager.CACHE_KEYS.USERS);
   }
-
-  /**
-   * Check if cached users are available and not expired
-   * @returns {boolean} - Whether valid cached users exist
-   */
-  static hasCachedUsers() {
-    const cachedUsers = CacheManager.getItem(CacheManager.CACHE_KEYS.USERS);
-    return cachedUsers && cachedUsers.length > 0;
-  }
 }

@@ -43,56 +43,6 @@ export class WeatherService {
   }
 
   /**
-   * Get weather for multiple coordinates with parallel processing
-   * @param {Array} coordinatesArray - Array of {lat, lng} objects
-   * @returns {Promise<Array>} - Array of weather data objects
-   */
-  static async getWeatherForMultipleLocations(coordinatesArray) {
-    if (!coordinatesArray || coordinatesArray.length === 0) {
-      Logger.warn("No coordinates provided for weather fetch");
-      return [];
-    }
-
-    Logger.info(`🌤️ Fetching weather for ${coordinatesArray.length} locations`);
-
-    const weatherPromises = coordinatesArray.map(async (coords, index) => {
-      try {
-        const weather = await this.getCurrentWeather(coords.lat, coords.lng);
-        return { index, weather, success: true };
-      } catch (error) {
-        Logger.error(`Failed to get weather for location ${index + 1}:`, error);
-        return { index, weather: null, success: false, error };
-      }
-    });
-
-    const results = await Promise.allSettled(weatherPromises);
-
-    // Process results and maintain order
-    const weatherData = new Array(coordinatesArray.length).fill(null);
-    let successCount = 0;
-
-    results.forEach((result, index) => {
-      if (result.status === "fulfilled") {
-        const { index: originalIndex, weather, success } = result.value;
-        weatherData[originalIndex] = weather;
-        if (success) {
-          successCount++;
-        }
-      } else {
-        Logger.error(
-          `Weather fetch failed for location ${index + 1}:`,
-          result.reason
-        );
-      }
-    });
-
-    Logger.info(
-      `📊 Weather fetch complete: ${successCount}/${coordinatesArray.length} successful`
-    );
-    return weatherData;
-  }
-
-  /**
    * Check if weather data is still fresh (less than 30 minutes old)
    * @param {Object} weatherData - Weather data object with timestamp
    * @returns {boolean} - Whether the data is still fresh
